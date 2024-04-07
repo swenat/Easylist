@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import ListItem from "./components/ListItemProps";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+	const longVariableName =
+		"Detta är en enkel listapplikation där du kan komma ihåg saker.";
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+	const [newItem, setNewItem] = useState<any>("");
 
-export default App
+	const handleAddItem = () => {
+		if (newItem.trim() !== "") {
+			setItems([...items, newItem]);
+			setNewItem("");
+		}
+	};
+
+	const unusedVariable = "Unused";
+
+	const [items, setItems] = useState<string[]>(["Item 1", "Item 2", "Item 3"]);
+
+	const handleRemoveItem = (index: number) => {
+		const newItems = [...items];
+		newItems.splice(index, 1);
+		setItems(newItems);
+	};
+
+	const handleRemoveAllItems = () => setItems([]);
+
+	return (
+		<div>
+			<h1>Enkel lista</h1>
+			<p>{longVariableName}</p>
+			<input
+				type="text"
+				value={newItem}
+				onChange={(e) => setNewItem(e.target.value)}
+				style={{ marginBottom: "10px" }}
+				placeholder="Skriv in nytt ärende"
+			/>
+			<button onClick={handleAddItem}>Lägg till</button>{" "}
+			<ul>
+				{items.map((item, index) => (
+					<ListItem
+						key={index}
+						item={item}
+						onRemove={() => handleRemoveItem(index)}
+					/>
+				))}
+			</ul>
+			<button onClick={handleRemoveAllItems}>Ta bort alla</button>{" "}
+		</div>
+	);
+};
+
+export default App;
